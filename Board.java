@@ -1,4 +1,4 @@
-package memory.game;
+package memory_game;
 
 import java.security.SecureRandom;
 
