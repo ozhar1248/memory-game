@@ -18,18 +18,7 @@ public class MemoryGame {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        Board b = new Board(4);
-        Scanner s = new Scanner(System.in);
-        while (b.onGame())
-        {
-            b.printBoard();
-            System.out.println("********");
-            int row1 = s.nextInt();
-            int col1 = s.nextInt();
-            int row2 = s.nextInt();
-            int col2 = s.nextInt();
-            b.move(row1, col1, row2, col2);
-        }
+        ConnectToServer c = new ConnectToServer("localhost");
         
     }
     

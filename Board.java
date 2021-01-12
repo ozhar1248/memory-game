@@ -1,4 +1,4 @@
-package memory_game;
+package memory.game;
 
 import java.security.SecureRandom;
 
@@ -28,15 +28,14 @@ public class Board {
         countTaken = n*n;
         board = new int[n*n];
         randomizeBoard();
-        
     }
     
     // row- between 1 and n, also col
     //return 1 if change has been made and 0 otherwise
     public int move(int row1, int col1, int row2, int col2)
     {
-        assert(!(row1 > size || row1 < 0 || row2 > size || row2 < 0
-                || col1 > size || col1 < 0 || col2 > size || col2 < 0));
+        assert !(row1 > size || row1 < 0 || row2 > size || row2 < 0
+                || col1 > size || col1 < 0 || col2 > size || col2 < 0);
         if (lookUp(row1,col1) == lookUp(row2, col2) && lookUp(row1,col1) != TAKEN)
         {
             setBoard(row1, col1, TAKEN);
