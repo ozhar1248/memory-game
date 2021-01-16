@@ -7,6 +7,8 @@ package memory.game;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -19,7 +21,12 @@ public class Server {
         BlockingQueue<Package> qu_out = new LinkedBlockingQueue<>();
         
         GameCenter game_center = new GameCenter(qu_in, qu_out);
+        new ThreadReceivingPackages(game_center, qu_in).start();
         ConnectToClient c = new ConnectToClient(qu_in, qu_out, game_center);
     }
     
+    
+    
 }
+
+

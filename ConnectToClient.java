@@ -31,8 +31,8 @@ public class ConnectToClient {
         }
         System.out.println("server ready");
         
-        SendingPackages sender = new SendingPackages(_out, sockets_map);
-        sender.start();
+        new SendingPackagesToClient(_out, sockets_map).start();
+        
         
         Socket socket = null;
         while (listening)
@@ -42,7 +42,7 @@ public class ConnectToClient {
                 socket = serverSocket.accept();
                 int new_id = _center.addClient();
                 sockets_map.put(new_id, socket);
-                
+                new ReceivingMessages(socket, _in).start();
             }
             catch (IOException e)
             {
@@ -60,49 +60,13 @@ public class ConnectToClient {
         }
     }
 
-    private static class DealingWithClient extends Thread{
-
-        private Socket m_socket;
-        
-        public DealingWithClient(Socket socket) 
-        {
-            m_socket = socket;
-        }
-
-        @Override
-        public void run() {
-            try
-            {
-                PrintWriter out = new PrintWriter(m_socket.getOutputStream(), true);
-                BufferedReader in = new BufferedReader(new InputStreamReader(m_socket.getInputStream()));
-                
-                String inputLine;
-                while ((inputLine = in.readLine()) != null)
-                {
-                    out.println("From server: "+inputLine);
-                }
-                out.close();
-                in.close();
-                m_socket.close();
-                
-            }
-            catch (IOException e)
-            {
-                
-            }
-            
-            
-            
-        }
-    }
-    
-    private static class SendingPackages extends Thread
+    private static class SendingPackagesToClient extends Thread
     {
         BlockingQueue<Package> out;
         HashMap<Integer, Socket> sockets_map;
         HashMap<Socket, PrintWriter> writers_map;
         
-        public SendingPackages(BlockingQueue<Package> _out, HashMap<Integer, Socket> _sockets_map)
+        public SendingPackagesToClient(BlockingQueue<Package> _out, HashMap<Integer, Socket> _sockets_map)
         {
             this.out = _out;
             this.sockets_map = _sockets_map;
@@ -120,15 +84,17 @@ public class ConnectToClient {
                 try
                 {
                     newP = out.take();
+                    System.out.println("#server: pull from queue");
                     socket = sockets_map.get(newP.getClientNumber());
                     PrintWriter out = writers_map.get(socket);
                     if (out == null)
                     {
                         out = new PrintWriter(socket.getOutputStream(), true);
+                        out.flush();
                         writers_map.put(socket, out);
                     }
-                    out.println(newP.getClientNumber()+"#"+newP.getOpertionNumber()
-                            +"#"+newP.getMessage());
+                    out.println(Package.ConvertToString(newP));
+                    System.out.println("#server: sent to client");
                 }
                 catch (InterruptedException e)
                 {
@@ -142,5 +108,8 @@ public class ConnectToClient {
             }
         }
     }
+    
+    
+            
     
 }

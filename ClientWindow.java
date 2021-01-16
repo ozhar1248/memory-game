@@ -9,8 +9,10 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -19,19 +21,27 @@ import javax.swing.JPanel;
  * @author ozhar
  */
 public class ClientWindow extends JFrame{
-    public ClientWindow() throws InterruptedException 
+    private ArrayList<Card> cardsArray;
+    private int size = 0;
+    private BlockingQueue<Package> mail;
+    
+    public ClientWindow(int size, BlockingQueue<Package> mail) throws InterruptedException 
     {
         super();
+        this.mail = mail;
         JPanel table = new JPanel();
-        GridLayout grid = new GridLayout(4,4);
+        GridLayout grid = new GridLayout(size,size);
         grid.setVgap(50);
         grid.setHgap(50);
         table.setLayout(grid);
+        cardsArray = new ArrayList<>();
+        this.size = size;
         
-        for (int i = 0; i < 16; ++i)
+        for (int i = 0; i < size*size; ++i)
         {
-            Card card = new Card(i);
+            Card card = new Card(i, mail);
             table.add(card);
+            cardsArray.add(card);
         }
         super.add(table);
         
@@ -40,6 +50,14 @@ public class ClientWindow extends JFrame{
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
+    }
+    
+    public void setTurn(boolean turn)
+    {
+        for (int i = 0; i < size*size; ++i)
+        {
+            cardsArray.get(i).setTurn(turn);
+        }
     }
     
     

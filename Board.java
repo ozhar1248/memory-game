@@ -32,19 +32,16 @@ public class Board {
     
     // row- between 1 and n, also col
     //return 1 if change has been made and 0 otherwise
-    public int move(int row1, int col1, int row2, int col2)
+    public int move(int i1, int i2)
     {
-        assert !(row1 > size || row1 < 0 || row2 > size || row2 < 0
-                || col1 > size || col1 < 0 || col2 > size || col2 < 0);
-        if (lookUp(row1,col1) == lookUp(row2, col2) && lookUp(row1,col1) != TAKEN)
+        if (board[i1] == board[i2] && board[i1] != TAKEN)
         {
-            setBoard(row1, col1, TAKEN);
-            setBoard(row2, col2, TAKEN);
+            board[i1] = TAKEN;
+            board[i2] = TAKEN;
             countTaken -= 2;
             return 1;
         }
         return 0;
-        
     }
     
     public boolean onGame()
@@ -55,11 +52,6 @@ public class Board {
     private int lookUp(int row, int col)
     {
         return board[(row-1)*size -1 +col];
-    }
-    
-    private void setBoard(int row, int col, int num)
-    {
-        board[(row-1)*size -1 +col] = num;
     }
     
     public void printBoard()

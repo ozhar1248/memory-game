@@ -6,6 +6,8 @@
 package memory.game;
 
 import java.util.Scanner;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  *
@@ -18,7 +20,12 @@ public class MemoryGame {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        ConnectToServer c = new ConnectToServer("localhost");
+        BlockingQueue<Package> qu_in = new LinkedBlockingQueue<>();
+        BlockingQueue<Package> qu_out = new LinkedBlockingQueue<>();
+        PackageReceiver center = new ClientCenter(qu_out);
+        new ThreadReceivingPackages(center, qu_in).start();
+        ConnectToServer c = new ConnectToServer("localhost", qu_in, qu_out);
+        
         
     }
     
