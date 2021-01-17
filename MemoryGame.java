@@ -22,6 +22,8 @@ public class MemoryGame {
         // TODO code application logic here
         BlockingQueue<Package> qu_in = new LinkedBlockingQueue<>();
         BlockingQueue<Package> qu_out = new LinkedBlockingQueue<>();
+        int size = Colors.N;
+        //send size
         PackageReceiver center = new ClientCenter(qu_out);
         new ThreadReceivingPackages(center, qu_in).start();
         ConnectToServer c = new ConnectToServer("localhost", qu_in, qu_out);

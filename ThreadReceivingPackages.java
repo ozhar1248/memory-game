@@ -30,6 +30,7 @@ public class ThreadReceivingPackages extends Thread
             {
                 try {
                     Package pack = in.take();
+                    
                     center.ReceivePackage(pack);
                     //deliver the packsge to the center
                 } catch (InterruptedException ex) {

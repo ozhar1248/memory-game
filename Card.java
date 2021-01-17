@@ -29,7 +29,6 @@ public class Card extends JPanel{
     {
         m_i = i;
         this.mail = mail;
-        super.setBackground(Color.black);
         turn = false;
         
         addMouseListener(new MouseAdapter()

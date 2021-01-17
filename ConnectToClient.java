@@ -42,7 +42,7 @@ public class ConnectToClient {
                 socket = serverSocket.accept();
                 int new_id = _center.addClient();
                 sockets_map.put(new_id, socket);
-                new ReceivingMessages(socket, _in).start();
+                new ReceivingMessages(socket, _in, new_id).start();
             }
             catch (IOException e)
             {

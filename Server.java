@@ -20,6 +20,8 @@ public class Server {
         BlockingQueue<Package> qu_in = new LinkedBlockingQueue<>();
         BlockingQueue<Package> qu_out = new LinkedBlockingQueue<>();
         
+        int size = Colors.N;
+        //send size
         GameCenter game_center = new GameCenter(qu_in, qu_out);
         new ThreadReceivingPackages(game_center, qu_in).start();
         ConnectToClient c = new ConnectToClient(qu_in, qu_out, game_center);

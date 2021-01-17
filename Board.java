@@ -31,17 +31,19 @@ public class Board {
     }
     
     // row- between 1 and n, also col
-    //return 1 if change has been made and 0 otherwise
+    //return value if the user was right
+    // return -1 otherwise
     public int move(int i1, int i2)
     {
-        if (board[i1] == board[i2] && board[i1] != TAKEN)
+        if (board[i1] == board[i2])
         {
+            int val = board[i1];
             board[i1] = TAKEN;
             board[i2] = TAKEN;
             countTaken -= 2;
-            return 1;
+            return val;
         }
-        return 0;
+        return -1;
     }
     
     public boolean onGame()
@@ -49,9 +51,14 @@ public class Board {
         return countTaken > 0;
     }
     
-    private int lookUp(int row, int col)
+    public boolean isTaken(int index)
     {
-        return board[(row-1)*size -1 +col];
+        return board[index] == TAKEN;
+    }
+    
+    public int lookUp(int index)
+    {
+        return board[index];
     }
     
     public void printBoard()

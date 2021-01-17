@@ -5,6 +5,7 @@
  */
 package memory.game;
 
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -25,6 +26,7 @@ public class ClientWindow extends JFrame{
     private int size = 0;
     private BlockingQueue<Package> mail;
     
+    
     public ClientWindow(int size, BlockingQueue<Package> mail) throws InterruptedException 
     {
         super();
@@ -40,6 +42,7 @@ public class ClientWindow extends JFrame{
         for (int i = 0; i < size*size; ++i)
         {
             Card card = new Card(i, mail);
+            card.setBackground(Color.black);
             table.add(card);
             cardsArray.add(card);
         }
@@ -52,12 +55,24 @@ public class ClientWindow extends JFrame{
         
     }
     
+    
+
     public void setTurn(boolean turn)
     {
         for (int i = 0; i < size*size; ++i)
         {
             cardsArray.get(i).setTurn(turn);
         }
+    }
+    
+    public void showCard(int card, int indexColor)
+    {
+        cardsArray.get(card).setBackground(Colors.getColor(indexColor)); //bug
+    }
+    
+    public void showOffCard(int index)
+    {
+        cardsArray.get(index).setBackground(Color.BLACK);
     }
     
     

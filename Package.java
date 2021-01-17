@@ -11,6 +11,10 @@ package memory.game;
  * operator-        0 : create board. message is the size of the board
  *                  1 : turn. if message is "1" so it is your turn and "0" otherwise
  *                  2 : the client chose a card. message is the card number
+ *                  3 : the server order to show the card. message is the card number, space, and then the index
+ *                      of the color
+ *                  4 : show off the card. 
+ *                  5 : game over. message is lost or win or even
  * @author ozhar
  */
 public class Package {

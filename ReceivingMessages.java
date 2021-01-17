@@ -18,12 +18,21 @@ import java.util.concurrent.BlockingQueue;
 public class ReceivingMessages extends Thread
     {
         private Socket socket;
-        BlockingQueue<Package> qu_in;
+        private BlockingQueue<Package> qu_in;
+        private int id;
         
         public ReceivingMessages(Socket socket, BlockingQueue<Package> in)
         {
             this.socket = socket;
             this.qu_in = in;
+            id = -1;
+        }
+        
+        public ReceivingMessages(Socket socket, BlockingQueue<Package> in, int id)
+        {
+            this.socket = socket;
+            this.qu_in = in;
+            this.id = id;
         }
         
         @Override
@@ -40,6 +49,7 @@ public class ReceivingMessages extends Thread
                     Package newP = Package.conertToPackage(inputLine);
                     if (newP != null)
                     {
+                        newP.setClientNumber(id);
                         qu_in.put(newP);
                     }
                     else

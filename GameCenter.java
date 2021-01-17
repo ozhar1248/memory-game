@@ -61,9 +61,10 @@ public class GameCenter implements PackageReceiver{
         }
     }
     
-    private void chooseCard(int id, int card)
+    private void chooseCard(Integer id, int card)
     {
-        /***********************************stopped here***************/
+        
+        clientGameMap.get(id).chooseCard(card);
         
     }
     
