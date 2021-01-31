@@ -1,25 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package memory.game;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-/**
- *
- * @author ozhar
- */
-public class ClientCenter implements PackageReceiver{
-    private BlockingQueue<Package> qu_out;
+public class ClientCenter implements PackageReceiver
+{
     ClientWindow game;
     
-    public ClientCenter(BlockingQueue<Package> qu_out)
+    public ClientCenter()
     {
-        this.qu_out = qu_out;
         game = null;
     }
     public void ReceivePackage(Package _package)
@@ -28,9 +14,11 @@ public class ClientCenter implements PackageReceiver{
         int op = _package.getOpertionNumber();
         switch (op)
         {
-            case 0: openNewGame(_package);
+            case 0: int size = Integer.parseInt(_package.getMessage());
+                    game = new ClientWindow(size, QueuesClient.out);
                     break;
-            case 1: changeTurn(_package);
+            case 1: int turn = Integer.parseInt(_package.getMessage());
+                    game.setTurn((turn==1));
                     break;
             case 3: String[] tokens = _package.getMessage().split(" ");
                     card = Integer.parseInt(tokens[0]);
@@ -38,48 +26,15 @@ public class ClientCenter implements PackageReceiver{
                     game.showCard(card, indexColor);
                     break;
             case 4: card = Integer.parseInt(_package.getMessage());
-                    showOffCard(card);
+                    game.showOffCard(card);
                     break;
             case 5: String message = _package.getMessage();
                     endGame(message);
-                
         }
-    }
-    
-    private void openNewGame(Package _package)
-    {
-        int size = Integer.parseInt(_package.getMessage());
-        //check if its not null
-        try {
-
-            game = new ClientWindow(size, qu_out);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(ClientCenter.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    private void changeTurn(Package _package)
-    {
-        int turn = Integer.parseInt(_package.getMessage());
-        if (turn == 1)
-        {
-            game.setTurn(true);
-        }
-        else
-        {
-            game.setTurn(false);
-        }
-    }
-   
-    
-    private void showOffCard(int num)
-    {
-        game.showOffCard(num);
     }
     
     private void endGame(String outcome)
     {
         // to complete
     }
-    
 }
